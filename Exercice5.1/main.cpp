@@ -18,6 +18,27 @@ void GenerateMysteryNumber(unsigned int& mystery) {
 	
 }
 
+void GuessMysteryNumber(GameState& gameState, unsigned int mysteryNumber)
+{
+	unsigned int guessPlayer = 0;
+
+	std::cout << "Try to guess the mystery number (between 0 and 100):\n";
+	std::cin >> guessPlayer;
+
+	if (guessPlayer == mysteryNumber)
+	{
+		std::cout << "You won!\n";
+
+		gameState = GameState::END;
+	}
+	else
+	{
+		std::cout << "It's not the right number try again.\n";
+
+		gameState = GameState::PLAY;
+	}
+}
+
 int main() {
 	GameState gameState = GameState::INIT;
 
@@ -42,6 +63,9 @@ int main() {
 				- essayer de deviner le nombre mystère à l'aide d'un function
 				- Si le nombre mystre est trouvé il faut passer à l'état END
 			*/
+
+			GuessMysteryNumber(gameState, mysteryNumber);
+			
 			break;
 
 		case GameState::END:
