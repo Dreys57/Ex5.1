@@ -18,7 +18,7 @@ void GenerateMysteryNumber(unsigned int& mystery) {
 	
 }
 
-void GuessMysteryNumber(GameState& gameState, unsigned int mysteryNumber)
+void GuessMysteryNumber(GameState& gameState, unsigned int mysteryNumber, unsigned int& tries)
 {
 	unsigned int guessPlayer = 0;
 
@@ -31,20 +31,31 @@ void GuessMysteryNumber(GameState& gameState, unsigned int mysteryNumber)
 
 		gameState = GameState::END;
 	}
-	else
+	else if (guessPlayer < mysteryNumber)
 	{
-		std::cout << "It's not the right number try again.\n";
+		std::cout << "Higher!\n";
 
 		gameState = GameState::PLAY;
+
+		tries++;
+	}
+	else if (guessPlayer > mysteryNumber)
+	{
+		std::cout << "Lower!\n";
+
+		gameState = GameState::PLAY;
+
+		tries++;
 	}
 }
 
 int main() {
 	GameState gameState = GameState::INIT;
 
-	unsigned int mysteryNumber;
+	unsigned int mysteryNumber = 0;
+	unsigned int numberTries = 0;
 
-	while (gameState != GameState::EXIT);
+	do
 	{
 		switch (gameState) {
 		case GameState::INIT:
@@ -55,6 +66,7 @@ int main() {
 			GenerateMysteryNumber(mysteryNumber);
 
 			gameState = GameState::PLAY;
+
 			break;
 
 		case GameState::PLAY:
@@ -64,7 +76,7 @@ int main() {
 				- Si le nombre mystre est trouvé il faut passer à l'état END
 			*/
 
-			GuessMysteryNumber(gameState, mysteryNumber);
+			GuessMysteryNumber(gameState, mysteryNumber, numberTries);
 			
 			break;
 
@@ -72,12 +84,14 @@ int main() {
 			/*
 				Cette partie doit afficher le nombre de coups qui ont été nécessaire pour trouver le nombre mystère et indiquer quel est ce nombre mystère
 			*/
-			break;
 
-		case GameState::EXIT:
+			std::cout << "You guessed the mystery number which was " << mysteryNumber << " in " << numberTries << " tries\n";
+
+			gameState = GameState::EXIT;
+
 			break;
 		}
-	}
+	} while (gameState != GameState::EXIT);
 
 	
 	system("pause");
